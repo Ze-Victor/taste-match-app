@@ -1,10 +1,16 @@
+import ProfileSuggestion from './components/ProfileSuggestion';
+
 function App() {
   return (
-    <>
-      <div className="flex w-full border items-center justify-center text-5xl">
-        <h1 className="font-bold">Taste Match</h1>
-      </div>
-    </>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
+      <ProfileSuggestion
+        name="Maria Silva"
+        imageUrl="https://randomuser.me/api/portraits/women/44.jpg"
+        onLike={() => alert('Curtiu!')}
+        onDislike={() => alert('Não curtiu!')}
+        onViewProfile={() => alert('Ver perfil completo')}
+      />
+    </div>
   );
 }
 
