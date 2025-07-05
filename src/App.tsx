@@ -1,11 +1,13 @@
+import Formulario from "./Formulario.tsx";
+import Header from "./Header.tsx";
+
 function App() {
-  return (
-    <>
-      <div className="flex w-full border items-center justify-center text-5xl">
-        <h1 className="font-bold">Taste Match</h1>
-      </div>
-    </>
-  );
+    return (
+        <div className="flex flex-col w-full items-center justify-center">
+            <Header/>
+            <Formulario/>
+        </div>
+    );
 }
 
 export default App;

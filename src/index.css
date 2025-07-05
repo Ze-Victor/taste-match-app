@@ -1,7 +1,9 @@
 @import "tailwindcss";
 
 :root {
-  background-color: pink;
+  font-family: "Quicksand", sans-serif;
+  line-height: 1.5;
+  background: radial-gradient(#280a48, #20043d);
 }
 
 body {
