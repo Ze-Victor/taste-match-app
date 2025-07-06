@@ -1,12 +1,15 @@
-import Formulario from "./Formulario.tsx";
-import Header from "./Header.tsx";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Login from "./pages/Login";
+import Match from "./pages/Match";
 
 function App() {
     return (
-        <div className="flex flex-col w-full items-center justify-center">
-            <Header/>
-            <Formulario/>
-        </div>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/Login" element={<Login />} />
+          <Route path="/match" element={<Match />} />
+        </Routes>
+      </BrowserRouter>
     );
 }
 
