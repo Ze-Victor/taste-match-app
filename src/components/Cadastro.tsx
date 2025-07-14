@@ -4,12 +4,15 @@ import { UserSchemas } from "../schemas/UserSchemas";
 
 export default function Cadastro() {
     const [form, setForm] = useState({
-        nome: "",
+        name: "",
         email: "",
-        senha: "",
-        sexo: "",
-        nascimento: "",
-        gastronomia: ""
+        password: "",
+        gender: "",
+        birthDate: "",
+        brasileira: "",
+        japonesa: "",
+        chinesa: "",
+        italiana: "",
     });
     const [errors, setErrors] = useState<any>({});
 
@@ -20,11 +23,15 @@ export default function Cadastro() {
     function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
         const result = UserSchemas.createUser.safeParse({
-            name: form.nome,
+            name: form.name,
             email: form.email,
-            password: form.senha,
-            sexo: form.sexo,
-            birthDate: form.nascimento
+            password: form.password,
+            gender: form.gender,
+            birthDate: form.birthDate,
+            brasileira: Number(form.brasileira),
+            japonesa: Number(form.japonesa),
+            chinesa: Number(form.chinesa),
+            italiana: Number(form.italiana),
         });
         if (!result.success) {
             const fieldErrors: any = {};
@@ -44,12 +51,12 @@ export default function Cadastro() {
                 <div className="flex flex-wrap -mx-3 mb-6">
                     <div className="w-full md:w-1/2 px-3">
                         <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                            htmlFor="nome">
+                            htmlFor="name">
                             Nome
                         </label>
                         <input
                             className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white"
-                            id="nome" type="text" placeholder="Nome" value={form.nome} onChange={handleChange} />
+                            id="name" type="text" placeholder="Nome" value={form.name} onChange={handleChange} />
                         {errors.name && <p className="text-red-500 text-xs italic"> {errors.name}</p>}
                     </div>
                     <div className="w-full md:w-1/2 px-3">
@@ -71,7 +78,7 @@ export default function Cadastro() {
                         </label>
                         <input
                             className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                            id="senha" type="password" placeholder="******************" value={form.senha} onChange={handleChange} />
+                            id="password" type="password" placeholder="******************" value={form.password} onChange={handleChange} />
                         {errors.password && <p className="text-red-500 text-xs italic">{errors.password}</p>}
                     </div>
                 </div>
@@ -84,7 +91,7 @@ export default function Cadastro() {
                         <div className="relative">
                             <select
                                 className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                id="sexo" value={form.sexo} onChange={handleChange}>
+                                id="gender" value={form.gender} onChange={handleChange}>
                                 <option value="">Selecione</option>
                                 <option value="masculino">Masculino</option>
                                 <option value="feminino">Feminino</option>
@@ -108,7 +115,7 @@ export default function Cadastro() {
                         </label>
                         <input
                             className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                            id="nascimento" type="date" value={form.nascimento} onChange={handleChange} />
+                            id="birthDate" type="date" value={form.birthDate} onChange={handleChange} />
                         {errors.birthDate && <p className="text-red-500 text-xs italic">{errors.birthDate}</p>}
                     </div>
                 </div>
@@ -116,13 +123,17 @@ export default function Cadastro() {
                     className="w-full mt-6 px-3 mb-6 md:mb-0 border grid grid-cols-4 gap-2 place-items-center bg-gray-200 p-4 text-gray-700 text-xs font-bold uppercase">
                     <legend>Informe a preferência pelas gastronomias:</legend>
                     <label htmlFor="brasileira">Brasileira:</label>
-                    <input className="bg-white p-2 w-1/2" type="number" id="brasileira" name="brasileira" min={0} max={5} />
+                    <input className="bg-white p-2 w-1/2" type="number" id="brasileira" name="brasileira"  value={form.brasileira} onChange={handleChange} min={0} max={5} />
+                    {errors.brasileira && <p className="text-red-500 text-xs italic">{errors.brasileira}</p>}
                     <label htmlFor="japonesa">Japonesa:</label>
-                    <input className="bg-white p-2 w-1/2" type="number" id="japonesa" name="japonesa" min={0} max={5} />
+                    <input className="bg-white p-2 w-1/2" type="number" id="japonesa" name="japonesa" value={form.japonesa} onChange={handleChange} min={0} max={5} />
+                    {errors.japonesa && <p className="text-red-500 text-xs italic">{errors.japonesa}</p>}
                     <label htmlFor="chinesa">Chinesa:</label>
-                    <input className="bg-white p-2 w-1/2" type="number" id="chinesa" name="chinesa" min={0} max={5} />
+                    <input className="bg-white p-2 w-1/2" type="number" id="chinesa" name="chinesa" value={form.chinesa} onChange={handleChange} min={0} max={5} />
+                    {errors.chinesa && <p className="text-red-500 text-xs italic">{errors.chinesa}</p>}
                     <label htmlFor="italiana">Italiana:</label>
-                    <input className="bg-white p-2 w-1/2" type="number" id="italiana" name="italiana" min={0} max={5} />
+                    <input className="bg-white p-2 w-1/2" type="number" id="italiana" name="italiana" value={form.italiana} onChange={handleChange} min={0} max={5} />
+                    {errors.italiana && <p className="text-red-500 text-xs italic">{errors.italiana}</p>}
                 </fieldset>
                 <div className="flex items-center justify-around">
                     <button
