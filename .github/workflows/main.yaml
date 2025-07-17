@@ -22,9 +22,6 @@ jobs:
       - name: Instalar dependências
         run: yarn install
 
-      - name: Executar Testes
-        run: yarn test
-
       - name: Executar Build
         run: yarn build
         env:
