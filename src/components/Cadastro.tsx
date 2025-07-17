@@ -97,7 +97,7 @@ export default function Cadastro() {
                                 <option value="feminino">Feminino</option>
                                 <option value="outro">Outro</option>
                             </select>
-                            {errors.sexo && <p className="text-red-500 text-xs italic">{errors.sexo}</p>}
+                            {errors.gender && <p className="text-red-500 text-xs italic">{errors.gender}</p>}
                             <div
                                 className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                                 <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
