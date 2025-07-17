@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import ProfileSuggestion from "../components/ProfileSuggestion";
-import { MatchDialog } from "../components/MatchDialog"; 
+import { MatchDialog } from "../components/MatchDialog";
 
 interface Profile {
     id: string;
@@ -12,7 +12,7 @@ interface Profile {
 export default function ProfileSuggestionPage() {
     const [profiles, setProfiles] = useState<Profile[]>([]);
     const [currentProfileIndex, setCurrentProfileIndex] = useState(0);
-    const [isMatchOpen, setIsMatchOpen] = useState(false); 
+    const [isMatchOpen, setIsMatchOpen] = useState(false);
 
     //Simulando a busca de perfis
     useEffect(() => {
@@ -36,8 +36,24 @@ export default function ProfileSuggestionPage() {
         setCurrentProfileIndex((prev) => (prev + 1 < profiles.length ? prev + 1 : 0));
     };
 
+    const handleCloseMatchDialog = () => {
+        setIsMatchOpen(false);
+        handleNextProfile();
+    };
+
     const handleLike = () => {
-        setIsMatchOpen(true); // abre o MatchDialog
+        if (false) {
+            setIsMatchOpen(true);
+        }
+        handleNextProfile();
+    };
+
+    const handleDislike = () => {
+        handleNextProfile();
+    };
+
+    const handleViewProfile = () => {
+        alert(`Visualizando perfil de ${profiles[currentProfileIndex].name}`);
     };
 
     if (profiles.length === 0) {
@@ -48,15 +64,15 @@ export default function ProfileSuggestionPage() {
 
     return (
         <div className="flex flex-col items-center justify-center h-screen">
-            <ProfileSuggestion 
+            <ProfileSuggestion
                 name={currentProfile.name}
                 age={currentProfile.age}
                 imageUrl={currentProfile.imageUrl}
-                onLike={handleLike} 
-                onDislike={handleNextProfile}
-                onViewProfile={() => alert(`Visualizando perfil de ${currentProfile.name}`)} 
+                onLike={handleLike}
+                onDislike={handleDislike}
+                onViewProfile={handleViewProfile}
             />
-            <MatchDialog open={isMatchOpen} setOpen={setIsMatchOpen} />
+            <MatchDialog open={isMatchOpen} setOpen={handleCloseMatchDialog} />
         </div>
     );
 }
