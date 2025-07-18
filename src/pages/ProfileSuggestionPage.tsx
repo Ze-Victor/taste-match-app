@@ -20,7 +20,7 @@ export default function ProfileSuggestionPage() {
     //Simulando a busca de perfis
     useEffect(() => {
         api.get("/v1/user")
-            .then((response) => {
+            .then((response: { data: any }) => {
                 console.log("API data:", response.data);
                 const formattedProfiles = response.data.map((profile: any, idx: number) => ({
                     id: profile.id,
@@ -31,7 +31,7 @@ export default function ProfileSuggestionPage() {
                 }));
                 setProfiles(formattedProfiles);
             })
-            .catch((error) => console.error(error));
+            .catch((error: unknown) => console.error(error));
     }, []);
 
     const handleNextProfile = () => {
