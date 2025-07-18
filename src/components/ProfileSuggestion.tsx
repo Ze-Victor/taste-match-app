@@ -5,6 +5,7 @@ interface ProfileSuggestionProps {
     name: string;
     age: number;
     imageUrl: string;
+    preferences?: string[];
     onLike: () => void;
     onDislike: () => void;
     onViewProfile: () => void;
@@ -14,6 +15,7 @@ const ProfileSuggestion: React.FC<ProfileSuggestionProps> = ({
     name,
     age,
     imageUrl,
+    preferences = [],
     onLike,
     onDislike,
     onViewProfile,
@@ -25,6 +27,23 @@ const ProfileSuggestion: React.FC<ProfileSuggestionProps> = ({
             className="w-84 h-84 object-cover mb-4 rounded-lg"
         />
         <h2 className="text-2xl font-semibold mb-6 text-left w-full">{name} {age}</h2>
+
+        {preferences.length > 0 && (
+            <div className="w-full mb-4">
+                <p className="text-sm text-gray-600 mb-2">Preferências:</p>
+                <div className="flex flex-wrap gap-1">
+                    {preferences.map((preference, index) => (
+                        <span
+                            key={index}
+                            className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full"
+                        >
+                            {preference}
+                        </span>
+                    ))}
+                </div>
+            </div>
+        )}
+
         <div className="flex gap-12">
             <button className="hover:bg-red-500 px-4 py-2 rounded-full text-lg shadow" onClick={onDislike}>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}

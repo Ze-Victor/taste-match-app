@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import ProfileSuggestion from "../components/ProfileSuggestion";
 import { MatchDialog } from "../components/MatchDialog";
+import api from "../services/Api";
+import { Link } from "react-router-dom";
 
 interface Profile {
-    id: string;
+    id: number;
     name: string;
     age: number;
     imageUrl: string;
+    preferences: string[];
 }
 
 export default function ProfileSuggestionPage() {
@@ -16,24 +19,27 @@ export default function ProfileSuggestionPage() {
 
     //Simulando a busca de perfis
     useEffect(() => {
-        const fetchedProfiles: Profile[] = [
-            { id: "1", name: "Alice", age: 25, imageUrl: "https://randomuser.me/api/portraits/women/44.jpg" },
-            { id: "2", name: "Bob", age: 30, imageUrl: "https://randomuser.me/api/portraits/men/44.jpg" },
-            { id: "3", name: "Charlie", age: 28, imageUrl: "https://randomuser.me/api/portraits/men/45.jpg" },
-        ];
-        setProfiles(fetchedProfiles);
+        api.get("/v1/user")
+            .then((response) => {
+                console.log("API data:", response.data);
+                const formattedProfiles = response.data.map((profile: any, idx: number) => ({
+                    id: profile.id,
+                    name: profile.name,
+                    age: new Date().getFullYear() - new Date(profile.birth_date).getFullYear(),
+                    imageUrl: `https://randomuser.me/api/portraits/${idx % 2 === 0 ? 'women' : 'men'}/${(idx % 50) + 1}.jpg`,
+                    preferences: profile.preferences.map((p: any) => p.description),
+                }));
+                setProfiles(formattedProfiles);
+            })
+            .catch((error) => console.error(error));
     }, []);
 
-    // código para buscar perfis de uma API
-    // useEffect(() => {
-    //     fetch("https://api.com/profiles")
-    //         .then((response) => response.json())
-    //         .then((data) => setProfiles(data))
-    //         .catch((error) => console.error(error));
-    // }, []);
-
     const handleNextProfile = () => {
-        setCurrentProfileIndex((prev) => (prev + 1 < profiles.length ? prev + 1 : 0));
+        setProfiles((prevProfiles) => {
+            const newProfiles = prevProfiles.filter((_, idx) => idx !== currentProfileIndex);
+            return newProfiles;
+        });
+        setCurrentProfileIndex(0);
     };
 
     const handleCloseMatchDialog = () => {
@@ -41,11 +47,24 @@ export default function ProfileSuggestionPage() {
         handleNextProfile();
     };
 
-    const handleLike = () => {
-        if (false) {
-            setIsMatchOpen(true);
+    const handleLike = async () => {
+        const userA = 4; // ID do usuário logado (ajuste conforme necessário)
+        const userB = profiles[currentProfileIndex].id;
+
+        try {
+            const response = await api.get(`/v1/user/match?userA=${userA}&userB=${userB}`);
+            const matchPercentage = parseFloat(response.data.match_percentage);
+            console.log("Match percentage:", matchPercentage);
+
+            if (matchPercentage >= 50) {
+                setIsMatchOpen(true);
+            } else {
+                handleNextProfile();
+            }
+        } catch (error) {
+            console.error(error);
+            handleNextProfile();
         }
-        handleNextProfile();
     };
 
     const handleDislike = () => {
@@ -57,7 +76,10 @@ export default function ProfileSuggestionPage() {
     };
 
     if (profiles.length === 0) {
-        return <div className="flex items-center justify-center h-screen">Carregando perfis...</div>;
+        return <div className="flex flex-col items-center justify-center h-screen">
+            <p className="text-xl text-gray-500 mb-4">Nenhum perfil disponível no momento.</p>
+            <Link to="/" className="bg-green-500 text-white px-4 py-2 rounded">Voltar para home</Link>
+        </div>
     }
 
     const currentProfile = profiles[currentProfileIndex];
@@ -68,6 +90,7 @@ export default function ProfileSuggestionPage() {
                 name={currentProfile.name}
                 age={currentProfile.age}
                 imageUrl={currentProfile.imageUrl}
+                preferences={currentProfile.preferences}
                 onLike={handleLike}
                 onDislike={handleDislike}
                 onViewProfile={handleViewProfile}
